@@ -3,6 +3,7 @@ package com.volgoak.simpleweather
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.bean.ReadableWeather
 import com.volgoak.simpleweather.databinding.ActivityWeatherBinding
@@ -37,14 +38,21 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
 
     override fun setWeather(weather: ReadableWeather) {
         binding.tvCityName.text = weather.city
-        binding.tvTemp.text = "Temp ${weather.temp}"
+        binding.tvTemp.text = "${weather.temp} °"
+        binding.tvWeatherDescription.text = weather.description
+
+        binding.tvMinTemp.text = "${weather.min}°"
+        binding.tvMaxTemp.text = "${weather.max}°"
+
+        binding.tvUnit.text = "C"
+
         Picasso.get()
                 .load(getIconUrl(weather.icon))
                 .into(binding.ivWeather)
     }
 
     override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, R.string.error, Toast.LENGTH_LONG).show()
     }
 
     override fun showProgress() {

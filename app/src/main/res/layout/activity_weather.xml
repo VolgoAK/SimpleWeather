@@ -1,32 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.volgoak.simpleweather.WeatherActivity">
 
-    <TextView
-        android:id="@+id/tvCityName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCityName"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin"
+            android:elevation="4dp"
+            >
 
-    <ImageView
-        android:id="@+id/ivWeather"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintRight_toRightOf="parent"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context="com.volgoak.simpleweather.WeatherActivity">
 
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvCityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/small_margin"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Volgograd" />
+
+                <TextView
+                    android:id="@+id/tvTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintRight_toLeftOf="@id/tvUnit"
+                    app:layout_constraintTop_toTopOf="@id/ivWeather"
+                    tools:text="20°" />
+
+                <TextView
+                    android:id="@+id/tvUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTemp"
+                    app:layout_constraintRight_toLeftOf="@id/ivWeather"
+                    tools:text="C" />
+
+                <TextView
+                    android:id="@+id/tvMaxTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintBottom_toBottomOf="@id/tvMinTemp"
+                    app:layout_constraintRight_toLeftOf="@id/tvTempDelimiter"
+                    tools:text="10°" />
+
+                <TextView
+                    android:id="@+id/tvTempDelimiter"
+                    android:text="/"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintBottom_toBottomOf="@id/tvMinTemp"
+                    app:layout_constraintRight_toLeftOf="@id/tvMinTemp" />
+
+                <TextView
+                    android:id="@+id/tvMinTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintRight_toRightOf="@id/tvUnit"
+                    app:layout_constraintTop_toBottomOf="@id/tvTemp"
+                    tools:text="5°" />
+
+                <ImageView
+                    android:id="@+id/ivWeather"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@mipmap/ic_launcher_round" />
+
+                <TextView
+                    android:id="@+id/tvWeatherDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    app:layout_constraintRight_toRightOf="@id/ivWeather"
+                    app:layout_constraintTop_toBottomOf="@id/ivWeather"
+                    tools:text="Awful rain" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
 </layout>

@@ -21,7 +21,7 @@ class WeatherPresenter(private var model: MVP.Model,
 
     override fun requestWeather() {
         disposable?.dispose()
-        disposable = model.requestCurrentWeather("volgograd")
+        disposable = model.requestCurrentWeather("mumbai")
                 .subscribeOn(subscribe)
                 .observeOn(observe)
                 .subscribe(this::onWeatherReady, this::onWeatherError)
@@ -38,6 +38,7 @@ class WeatherPresenter(private var model: MVP.Model,
 
     private fun onWeatherError(error:Throwable) {
         view?.showError()
+        error.printStackTrace()
         Timber.e(error)
     }
 }

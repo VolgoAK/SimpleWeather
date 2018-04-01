@@ -36,7 +36,7 @@ data class Coord(@SerializedName("lon")
 
 
 data class Wind(@SerializedName("deg")
-                val deg: Int = 0,
+                val deg: Double = 0.0,
                 @SerializedName("speed")
                 val speed: Double = 0.0)
 
@@ -58,9 +58,9 @@ data class Clouds(@SerializedName("all")
 data class Sys(@SerializedName("country")
                val country: String = "",
                @SerializedName("sunrise")
-               val sunrise: Int = 0,
+               val sunrise: Long = 0,
                @SerializedName("sunset")
-               val sunset: Int = 0,
+               val sunset: Long = 0,
                @SerializedName("id")
                val id: Int = 0,
                @SerializedName("type")
