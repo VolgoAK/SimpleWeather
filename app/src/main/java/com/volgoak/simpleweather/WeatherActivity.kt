@@ -3,8 +3,10 @@ package com.volgoak.simpleweather
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.bean.ReadableWeather
 import com.volgoak.simpleweather.databinding.ActivityWeatherBinding
+import com.volgoak.simpleweather.utils.getIconUrl
 
 import javax.inject.Inject
 
@@ -36,6 +38,9 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
     override fun setWeather(weather: ReadableWeather) {
         binding.tvCityName.text = weather.city
         binding.tvTemp.text = "Temp ${weather.temp}"
+        Picasso.get()
+                .load(getIconUrl(weather.icon))
+                .into(binding.ivWeather)
     }
 
     override fun showError() {

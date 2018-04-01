@@ -22,5 +22,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvCityName"/>
 
+    <ImageView
+        android:id="@+id/ivWeather"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>
 </layout>

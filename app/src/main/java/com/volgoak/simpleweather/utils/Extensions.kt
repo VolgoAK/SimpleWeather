@@ -8,5 +8,8 @@ import com.volgoak.simpleweather.bean.Weather
  */
 
 fun Weather.toReadableWeather() : ReadableWeather {
-    return ReadableWeather(this.name, this.main.temp)
+    val weather = ReadableWeather(this.name, this.main.temp)
+    val icon = this.weather?.get(0)?.icon
+    if(icon != null) weather.icon = icon
+    return weather
 }
