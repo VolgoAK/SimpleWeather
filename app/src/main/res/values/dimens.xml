@@ -8,5 +8,8 @@
     <!-- Images -->
     <dimen name="weather_image_size">60dp</dimen>
 
+    <!-- Card sizes -->
+    <dimen name="forecast_card_height" >100dp</dimen>
+
     <dimen name="small_margin">4dp</dimen>
 </resources>

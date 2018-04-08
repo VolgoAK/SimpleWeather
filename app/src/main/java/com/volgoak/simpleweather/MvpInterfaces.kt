@@ -1,7 +1,6 @@
 package com.volgoak.simpleweather
 
-import com.volgoak.simpleweather.bean.ReadableWeather
-import com.volgoak.simpleweather.bean.Weather
+import com.volgoak.simpleweather.bean.*
 import io.reactivex.Single
 
 /**
@@ -11,6 +10,7 @@ import io.reactivex.Single
 interface MVP {
     interface View {
         fun setWeather(weather: ReadableWeather)
+        fun setForecast(forecastList: List<DayForecast>)
         fun showError()
         fun showProgress()
         fun hideProgress()
@@ -18,10 +18,12 @@ interface MVP {
 
     interface Model {
         fun requestCurrentWeather(city : String) : Single<Weather>
+        fun requestForecast(city : String) : Single<Forecast>
     }
 
     interface Presenter {
         fun requestWeather()
+        fun requestForecast()
         fun setView(view : MVP.View?)
     }
 }

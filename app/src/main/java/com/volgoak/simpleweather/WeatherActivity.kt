@@ -1,34 +1,40 @@
 package com.volgoak.simpleweather
 
-import android.databinding.DataBindingUtil
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.widget.Toast
 import com.squareup.picasso.Picasso
+import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.bean.ReadableWeather
-import com.volgoak.simpleweather.databinding.ActivityWeatherBinding
 import com.volgoak.simpleweather.utils.getIconUrl
-
+import kotlinx.android.synthetic.main.activity_weather.*
 import javax.inject.Inject
 
 class WeatherActivity : AppCompatActivity(), MVP.View {
 
     @Inject
-    lateinit var presenter : MVP.Presenter
+    lateinit var presenter: MVP.Presenter
 
-    lateinit var binding : ActivityWeatherBinding
+    lateinit var adapter : RvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_weather)
+        setContentView(R.layout.activity_weather)
 
         (application as App).component.inject(this)
+
+        adapter = RvAdapter()
+        rvForecast.layoutManager = GridLayoutManager(this,3)
+        rvForecast.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
         presenter.setView(this)
         presenter.requestWeather()
+        presenter.requestForecast()
     }
 
     override fun onPause() {
@@ -37,18 +43,18 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
     }
 
     override fun setWeather(weather: ReadableWeather) {
-        binding.tvCityName.text = weather.city
-        binding.tvTemp.text = "${weather.temp} °"
-        binding.tvWeatherDescription.text = weather.description
+        tvCityName.text = weather.city
+        tvTemp.text = getString(R.string.temp_format, weather.temp)
+        tvWeatherDescription.text = weather.description
 
-        binding.tvMinTemp.text = "${weather.min}°"
-        binding.tvMaxTemp.text = "${weather.max}°"
+        tvMinTemp.text = getString(R.string.temp_format, weather.min)
+        tvMaxTemp.text = getString(R.string.temp_format, weather.max)
 
-        binding.tvUnit.text = "C"
+        tvUnit.text = "C"
 
         Picasso.get()
                 .load(getIconUrl(weather.icon))
-                .into(binding.ivWeather)
+                .into(ivWeather)
     }
 
     override fun showError() {
@@ -61,5 +67,9 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
 
     override fun hideProgress() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setForecast(forecastList: List<DayForecast>) {
+        adapter.setData(forecastList)
     }
 }

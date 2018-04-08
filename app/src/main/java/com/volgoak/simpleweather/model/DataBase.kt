@@ -1,5 +1,6 @@
 package com.volgoak.simpleweather.model
 
+import com.volgoak.simpleweather.bean.Forecast
 import com.volgoak.simpleweather.bean.Weather
 
 /**
@@ -8,6 +9,9 @@ import com.volgoak.simpleweather.bean.Weather
 interface DataBase {
     fun getWeather() : Weather?
     fun getWeatherUpdateTime() : Long
-
     fun saveWeather(weather: Weather)
+
+    fun getForecast() : Forecast?
+    fun getForecastUpdateTime() : Long
+    fun saveForecast(forecast: Forecast)
 }

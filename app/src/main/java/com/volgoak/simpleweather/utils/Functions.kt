@@ -1,5 +1,13 @@
 package com.volgoak.simpleweather.utils
 
+import android.annotation.SuppressLint
+import com.volgoak.simpleweather.bean.DayForecast
+import com.volgoak.simpleweather.bean.Forecast
+import com.volgoak.simpleweather.bean.ListItem
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
+
 /**
  * Created by alex on 4/1/18.
  */
@@ -27,3 +35,31 @@ fun getIconUrl(type: String): String {
 
     return "file:///android_asset/$image"
 }
+
+fun forecastToDailyForecast(forecast: Forecast) : List<DayForecast>? {
+    return forecast.list?.groupBy { forecastDateToDate(it.dtTxt).day }
+            ?.values?.map { dayListToWeather(it) }
+
+}
+
+@SuppressLint("SimpleDateFormat")
+fun forecastDateToDate(date : String) : Date {
+    Timber.d("Parse date $date")
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    return dateFormat.parse(date)
+}
+
+fun dayListToWeather(list : List<ListItem>) : DayForecast {
+    val max : Double = list.maxBy { it.main.tempMax }?.main?.tempMax ?: 0.0
+    val min : Double = list.minBy { it.main.tempMin }?.main?.tempMin ?: 0.0
+
+    val temp = (max + min) /2
+
+    val date = forecastDateToDate(list[0].dtTxt)
+
+    val icon = list[0].weather?.get(0)?.icon ?: "01d"
+    val description = list[0].weather?.get(0)?.description ?: "clear"
+
+    return DayForecast(date, temp, min, max, icon, description)
+}
+

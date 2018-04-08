@@ -1,6 +1,9 @@
 package com.volgoak.simpleweather
 
+import com.volgoak.simpleweather.bean.Forecast
 import com.volgoak.simpleweather.bean.Weather
+import com.volgoak.simpleweather.utils.forecastToDailyForecast
+import com.volgoak.simpleweather.utils.toListOfReadableWeather
 import com.volgoak.simpleweather.utils.toReadableWeather
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,15 +19,24 @@ class WeatherPresenter(private var model: MVP.Model,
                        private val observe: Scheduler = AndroidSchedulers.mainThread()) : MVP.Presenter {
 
     private var view: MVP.View? = null
-    private var disposable : Disposable? = null
+    private var weatherDisposable : Disposable? = null
+    private var forecastDisposable : Disposable? = null
 
 
     override fun requestWeather() {
-        disposable?.dispose()
-        disposable = model.requestCurrentWeather("mumbai")
+        weatherDisposable?.dispose()
+        weatherDisposable = model.requestCurrentWeather("mumbai")
                 .subscribeOn(subscribe)
                 .observeOn(observe)
                 .subscribe(this::onWeatherReady, this::onWeatherError)
+    }
+
+    override fun requestForecast() {
+        forecastDisposable?.dispose()
+        forecastDisposable = model.requestForecast("moscow")
+                .subscribeOn(subscribe)
+                .observeOn(observe)
+                .subscribe(this::onForecastReady, this::onWeatherError)
     }
 
     override fun setView(view: MVP.View?) {
@@ -36,9 +48,18 @@ class WeatherPresenter(private var model: MVP.Model,
         view?.setWeather(readableWeather)
     }
 
+    private fun onForecastReady(forecast : Forecast) {
+        val forecastList = forecastToDailyForecast(forecast)
+        if(forecastList != null) {
+            view?.setForecast(forecastList)
+        }
+    }
+
     private fun onWeatherError(error:Throwable) {
         view?.showError()
         error.printStackTrace()
         Timber.e(error)
     }
+
+
 }

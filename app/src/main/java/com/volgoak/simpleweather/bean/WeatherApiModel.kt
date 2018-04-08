@@ -28,6 +28,17 @@ data class Weather(@SerializedName("dt")
                    @SerializedName("wind")
                    val wind: Wind = Wind())
 
+data class Forecast(@SerializedName("city")
+                            val city: City,
+                    @SerializedName("cnt")
+                            val cnt: Int = 0,
+                    @SerializedName("cod")
+                            val cod: String = "",
+                    @SerializedName("message")
+                            val message: Double = 0.0,
+                    @SerializedName("list")
+                            val list: List<ListItem>?)
+
 
 data class Coord(@SerializedName("lon")
                  val lon: Double = 0.0,
@@ -76,8 +87,30 @@ data class Main(@SerializedName("temp")
                 @SerializedName("humidity")
                 val humidity: Int = 0,
                 @SerializedName("pressure")
-                val pressure: Int = 0,
+                val pressure: Double = 0.0,
                 @SerializedName("temp_max")
                 val tempMax: Double = 0.0)
 
+data class ListItem(@SerializedName("dt")
+                    val dt: Long = 0,
+                    @SerializedName("dt_txt")
+                    val dtTxt: String = "",
+                    @SerializedName("weather")
+                    val weather: List<WeatherItem>?,
+                    @SerializedName("main")
+                    val main: Main,
+                    @SerializedName("clouds")
+                    val clouds: Clouds,
+                    @SerializedName("sys")
+                    val sys: Sys,
+                    @SerializedName("wind")
+                    val wind: Wind)
 
+data class City(@SerializedName("country")
+                val country: String = "",
+                @SerializedName("coord")
+                val coord: Coord,
+                @SerializedName("name")
+                val name: String = "",
+                @SerializedName("id")
+                val id: Int = 0)
