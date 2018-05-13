@@ -1,6 +1,9 @@
-package com.volgoak.simpleweather
+package com.volgoak.simpleweather.di
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.volgoak.simpleweather.App
+import com.volgoak.simpleweather.MVP
+import com.volgoak.simpleweather.WeatherPresenter
 import com.volgoak.simpleweather.model.weather.DataBase
 import com.volgoak.simpleweather.model.weather.WeatherApi
 import com.volgoak.simpleweather.model.weather.WeatherDataBase
@@ -30,7 +33,7 @@ class WeatherModule {
     fun provideWeatherModel(api: WeatherApi, dataBase: DataBase): MVP.Model = WeatherModel(api, dataBase)
 
     @Provides
-    fun providesWeatherPresenter(model: MVP.Model, context: App) : MVP.Presenter = WeatherPresenter(model, appContext =  context)
+    fun providesWeatherPresenter(model: MVP.Model, context: App) : MVP.Presenter = WeatherPresenter(model, appContext = context)
 
     @Provides
     fun providesDataBase(context : App) : DataBase = WeatherDataBase(context)

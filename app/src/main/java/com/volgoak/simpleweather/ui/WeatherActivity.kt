@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather
+package com.volgoak.simpleweather.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.widget.Toast
 import com.squareup.picasso.Picasso
+import com.volgoak.simpleweather.App
+import com.volgoak.simpleweather.MVP
+import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.bean.ReadableWeather
 import com.volgoak.simpleweather.utils.getIconUrl

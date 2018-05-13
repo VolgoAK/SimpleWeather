@@ -1,6 +1,10 @@
 package com.volgoak.simpleweather
 
 import android.app.Application
+import com.volgoak.simpleweather.di.ApplicationComponent
+import com.volgoak.simpleweather.di.ApplicationModule
+import com.volgoak.simpleweather.di.DaggerApplicationComponent
+import com.volgoak.simpleweather.di.WeatherModule
 import timber.log.Timber
 
 /**

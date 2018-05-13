@@ -1,5 +1,6 @@
-package com.volgoak.simpleweather
+package com.volgoak.simpleweather.di
 
+import com.volgoak.simpleweather.App
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

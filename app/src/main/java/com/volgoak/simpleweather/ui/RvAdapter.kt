@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather
+package com.volgoak.simpleweather.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.utils.getDayIconUrl
-import com.volgoak.simpleweather.utils.getIconUrl
-import timber.log.Timber
 import java.text.SimpleDateFormat
 
 /**
