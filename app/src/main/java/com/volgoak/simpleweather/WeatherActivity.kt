@@ -1,7 +1,9 @@
 package com.volgoak.simpleweather
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.widget.Toast
@@ -17,7 +19,11 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
     @Inject
     lateinit var presenter: MVP.Presenter
 
-    lateinit var adapter : RvAdapter
+    lateinit var adapter: RvAdapter
+
+    companion object {
+        const val LOCATION_PERMISSION_REQUEST = 1033
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +32,7 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
         (application as App).component.inject(this)
 
         adapter = RvAdapter()
-        rvForecast.layoutManager = GridLayoutManager(this,3)
+        rvForecast.layoutManager = GridLayoutManager(this, 3)
         rvForecast.adapter = adapter
     }
 
@@ -34,7 +40,6 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
         super.onResume()
         presenter.setView(this)
         presenter.requestWeather()
-        presenter.requestForecast()
     }
 
     override fun onPause() {
@@ -70,6 +75,26 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
     }
 
     override fun setForecast(forecastList: List<DayForecast>) {
+        //take min and max temp from forecast, cause it incorrect in the current weather
+        if(forecastList.isNotEmpty()) {
+            val todayMin = forecastList[0].min
+            val todayMax = forecastList[0].max
+
+            tvMinTemp.text = getString(R.string.temp_format, todayMin)
+            tvMaxTemp.text = getString(R.string.temp_format, todayMax)
+        }
         adapter.setData(forecastList)
+    }
+
+    override fun askLocationPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                LOCATION_PERMISSION_REQUEST)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if(requestCode == LOCATION_PERMISSION_REQUEST && grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            presenter.requestWeather()
+        }
     }
 }

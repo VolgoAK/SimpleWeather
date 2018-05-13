@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.bean.DayForecast
+import com.volgoak.simpleweather.utils.getDayIconUrl
 import com.volgoak.simpleweather.utils.getIconUrl
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -44,14 +45,13 @@ class ForecastHolder(private val root: View) : RecyclerView.ViewHolder(root) {
     private val dateFormat = SimpleDateFormat("EE")
 
     fun bind(forecast: DayForecast) {
-        Timber.d("forecast is $forecast")
         tvMax.text = root.context.getString(R.string.temp_format, forecast.max)
         tvMin.text = root.context.getString(R.string.temp_format, forecast.min)
 
         tvDay.text = dateFormat.format(forecast.date)
 
         Picasso.get()
-                .load(getIconUrl(forecast.icon))
+                .load(getDayIconUrl(forecast.icon))
                 .into(icon)
     }
 }

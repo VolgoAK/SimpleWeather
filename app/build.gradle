@@ -26,7 +26,8 @@ android {
 }
 
 ext {
-    supportVersion = "27.1.0"
+    supportVersion = "27.1.1"
+    googleServicesVersion = "12.0.1"
 }
 
 dependencies {
@@ -43,6 +44,9 @@ dependencies {
     implementation "com.android.support:preference-v7:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+
+    //Google services
+    implementation "com.google.android.gms:play-services-location:$googleServicesVersion"
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -68,4 +72,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.7.19'
     testImplementation "org.robolectric:robolectric:3.8"
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "$supportVersion"
+            }
+        }
+    }
 }

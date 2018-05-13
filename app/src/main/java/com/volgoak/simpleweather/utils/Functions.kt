@@ -36,6 +36,16 @@ fun getIconUrl(type: String): String {
     return "file:///android_asset/$image"
 }
 
+fun getDayIconUrl(type: String):String {
+    var newType = type
+
+    if(type.last() == 'n') {
+        newType = type.substring(0, type.length - 2) + 'd'
+    }
+
+    return getIconUrl(newType)
+}
+
 fun forecastToDailyForecast(forecast: Forecast) : List<DayForecast>? {
     return forecast.list?.groupBy { forecastDateToDate(it.dtTxt).day }
             ?.values?.map { dayListToWeather(it) }

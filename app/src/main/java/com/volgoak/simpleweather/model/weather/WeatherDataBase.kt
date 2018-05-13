@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.model
+package com.volgoak.simpleweather.model.weather
 
 import android.content.Context
 import android.content.SharedPreferences

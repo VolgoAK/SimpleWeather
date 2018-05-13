@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.model
+package com.volgoak.simpleweather.model.weather
 
 import com.volgoak.simpleweather.bean.Forecast
 import com.volgoak.simpleweather.bean.Weather

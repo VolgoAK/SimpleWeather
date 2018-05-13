@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.model
+package com.volgoak.simpleweather.model.weather
 
 import com.volgoak.simpleweather.MVP
 import com.volgoak.simpleweather.bean.Forecast
@@ -41,6 +41,10 @@ class WeatherModel(val api: WeatherApi, val db: DataBase) : MVP.Model {
             Timber.d("Call forecast from api")
             api.getForecast(city, Values.weatherApiKey).doOnSuccess { f: Forecast -> db.saveForecast(f) }
         }
+    }
+
+    override fun requestCurrentWeather(lon: Double, lat: Double): Single<Weather> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     companion object {

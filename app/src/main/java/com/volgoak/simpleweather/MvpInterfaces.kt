@@ -14,16 +14,17 @@ interface MVP {
         fun showError()
         fun showProgress()
         fun hideProgress()
+        fun askLocationPermission()
     }
 
     interface Model {
         fun requestCurrentWeather(city : String) : Single<Weather>
+        fun requestCurrentWeather(lon : Double, lat : Double) : Single<Weather>
         fun requestForecast(city : String) : Single<Forecast>
     }
 
     interface Presenter {
         fun requestWeather()
-        fun requestForecast()
         fun setView(view : MVP.View?)
     }
 }
