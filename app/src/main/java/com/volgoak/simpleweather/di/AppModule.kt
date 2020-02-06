@@ -3,7 +3,6 @@ package com.volgoak.simpleweather.di
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.volgoak.simpleweather.BuildConfig
 import com.volgoak.simpleweather.model.location.LocationRepository
-import com.volgoak.simpleweather.model.location.LocationRepositoryImpl
 import com.volgoak.simpleweather.model.weather.WeatherApi
 import com.volgoak.simpleweather.model.weather.WeatherCacheProvider
 import com.volgoak.simpleweather.model.weather.WeatherRepository
@@ -56,7 +55,7 @@ val appModule = module {
         WeatherRepository(get())
     }
 
-    single<LocationRepository> { LocationRepositoryImpl(get()) }
+    single { LocationRepository(get()) }
 
     single<SchedulersProvider> { SchedulersProviderImpl() }
 }

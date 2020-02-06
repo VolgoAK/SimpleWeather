@@ -12,7 +12,9 @@ import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.bean.ReadableWeather
 import com.volgoak.simpleweather.utils.getIconUrl
+import com.volgoak.simpleweather.utils.hide
 import com.volgoak.simpleweather.utils.observeSafe
+import com.volgoak.simpleweather.utils.show
 import kotlinx.android.synthetic.main.activity_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,12 +42,15 @@ class WeatherActivity : AppCompatActivity() {
     private fun onNewState(state: WeatherScreeState) {
         when (state) {
             is WeatherScreeState.WeatherLoaded -> {
+                progress.hide()
                 setWeather(state.weather)
                 setForecast(state.forecast)
             }
             is WeatherScreeState.Error -> {
                 Toast.makeText(this, state.error, Toast.LENGTH_SHORT).show()
             }
+            is WeatherScreeState.Loading -> progress.show()
+            is WeatherScreeState.LocationPermissionRequired -> askLocationPermission()
         }
     }
 
@@ -62,10 +67,6 @@ class WeatherActivity : AppCompatActivity() {
         Picasso.get()
                 .load(getIconUrl(weather.icon))
                 .into(ivWeather)
-    }
-
-    private fun showError() {
-        Toast.makeText(this, R.string.error, Toast.LENGTH_LONG).show()
     }
 
     private fun setForecast(forecastList: List<DayForecast>) {

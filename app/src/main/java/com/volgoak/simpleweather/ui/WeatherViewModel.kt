@@ -22,11 +22,10 @@ class WeatherViewModel(
     private val weatherDisposable = SerialDisposable()
 
     init {
-        loadWeather()
+        stateLD.value = WeatherScreeState.LocationPermissionRequired
     }
 
     private fun loadWeather() {
-       //todo update location
         locationRepository.getLastKnownCity()
                 .flatMap {
                     Singles.zip(
@@ -49,7 +48,17 @@ class WeatherViewModel(
     }
 
     fun onPermissionResult(granted: Boolean) {
-        //todo implement
+        if(granted) {
+            locationRepository.update()
+                    .subscribeOn(schedulersProvider.io)
+                    .observeOn(schedulersProvider.ui)
+                    .subscribe( {
+                        loadWeather()
+                    }, { error ->
+                        Timber.e(error)
+                        stateLD.value = WeatherScreeState.Error("Error")
+                    }) into weatherDisposable
+        }
     }
 
     override fun onCleared() {
