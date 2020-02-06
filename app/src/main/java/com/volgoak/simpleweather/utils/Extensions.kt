@@ -1,7 +1,13 @@
 package com.volgoak.simpleweather.utils
 
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.volgoak.simpleweather.bean.*
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.SerialDisposable
 
 /**
  * Created by alex on 4/1/18.
@@ -41,4 +47,13 @@ fun View.hide() {
 
 fun View.show() {
     this.visibility = View.VISIBLE
+}
+
+infix fun Disposable.into(container: CompositeDisposable?) = container?.add(this)
+infix fun Disposable.into(container: SerialDisposable?) = container?.set(this)
+
+fun <T> LiveData<T>.observeSafe(owner: LifecycleOwner, block: (T) -> Unit) {
+    this.observe(owner, Observer {
+        it?.let { block(it) }
+    })
 }

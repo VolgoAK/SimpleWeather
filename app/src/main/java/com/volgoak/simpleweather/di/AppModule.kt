@@ -2,9 +2,13 @@ package com.volgoak.simpleweather.di
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.volgoak.simpleweather.BuildConfig
-import com.volgoak.simpleweather.MVP
-import com.volgoak.simpleweather.WeatherPresenter
-import com.volgoak.simpleweather.model.weather.*
+import com.volgoak.simpleweather.model.location.LocationRepository
+import com.volgoak.simpleweather.model.location.LocationRepositoryImpl
+import com.volgoak.simpleweather.model.weather.WeatherApi
+import com.volgoak.simpleweather.model.weather.WeatherCacheProvider
+import com.volgoak.simpleweather.model.weather.WeatherRepository
+import com.volgoak.simpleweather.utils.SchedulersProvider
+import com.volgoak.simpleweather.utils.SchedulersProviderImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -22,7 +26,7 @@ val appModule = module {
 
     single {
         HttpLoggingInterceptor(
-                HttpLoggingInterceptor.Logger { message -> Timber.i(message)})
+                HttpLoggingInterceptor.Logger { message -> Timber.i(message) })
                 .setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
@@ -48,11 +52,11 @@ val appModule = module {
 
     single { WeatherCacheProvider(get(), appId = get(named(NAME_OPEN_WEATHER_TOKEN))) }
 
-    single<MVP.Model> {
-        WeatherModel(get())
+    single {
+        WeatherRepository(get())
     }
 
-    single<MVP.Presenter> {
-        WeatherPresenter(get(), appContext = get())
-    }
+    single<LocationRepository> { LocationRepositoryImpl(get()) }
+
+    single<SchedulersProvider> { SchedulersProviderImpl() }
 }

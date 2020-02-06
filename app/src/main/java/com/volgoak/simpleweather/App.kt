@@ -20,7 +20,7 @@ class App : Application(){
 
         startKoin {
             androidContext(this@App)
-            modules(appModule)
+            modules(listOf(appModule, viewModelsModule))
         }
 
         if(BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())

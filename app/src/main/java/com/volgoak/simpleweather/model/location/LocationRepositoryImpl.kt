@@ -1,35 +1,37 @@
 package com.volgoak.simpleweather.model.location
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.location.Geocoder
 import android.location.Location
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.volgoak.simpleweather.utils.PreferenceHelper
 import com.volgoak.simpleweather.utils.PreferenceHelper.get
 import com.volgoak.simpleweather.utils.PreferenceHelper.set
+import io.reactivex.Single
 import timber.log.Timber
 import java.util.*
 
 /**
  * Created by alex on 4/8/18.
  */
-class LocationModelImpl(val context: Context) : LocationModel {
+class LocationRepositoryImpl(val context: Context) : LocationRepository {
 
     private var fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-
     private val preferenceHelper = PreferenceHelper.defaultPrefs(context)
 
-    private var locationData: MutableLiveData<Pair<Double, Double>> = MutableLiveData()
-
-    private val cityData: MutableLiveData<String> = MutableLiveData()
-
-    override fun getLocation(): LiveData<Pair<Double, Double>> {
-
-        return locationData
+    override fun getLocation(): Single<Pair<Double, Double>> {
+        return Single.create { emitter ->
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                location?.let { emitter.onSuccess(readLocation(it)) }
+                        ?: run { emitter.onError(RuntimeException("Location is null")) }
+            }.addOnFailureListener { exception ->
+                emitter.onError(exception)
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -42,7 +44,7 @@ class LocationModelImpl(val context: Context) : LocationModel {
 
     }
 
-    private fun readLocation(location: Location) {
+    private fun readLocation(location: Location): Pair<Double, Double> {
         Timber.d("latitide ${location.latitude} longitude ${location.longitude}")
         val geocoder = Geocoder(context, Locale.US)
         val adresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -56,24 +58,22 @@ class LocationModelImpl(val context: Context) : LocationModel {
 
         if (city.isNotEmpty()) {
             saveCity(city)
-            cityData.postValue(city)
         }
 
-        val position = Pair<Double, Double>(location.latitude, location.longitude)
+        val position = Pair(location.latitude, location.longitude)
         saveLocation(position)
-        locationData.postValue(position)
+        return position
     }
 
-    override fun getLastKnownCity(): LiveData<String> {
-        val city: String = preferenceHelper[CITY_PREF, "Moscow"]!!
-        cityData.value = city
+    override fun getLastKnownCity(): Single<String> {
 
-        //for test delete!!
-        val longitude : Double? = preferenceHelper[LONGITUDE_PREF]
-        Timber.d("saved longitude $longitude")
-
-
-        return cityData
+        return Single.create { emitter ->
+            preferenceHelper[CITY_PREF, "Moscow"]?.let {
+                emitter.onSuccess(it)
+            } ?: run {
+                emitter.onError(RuntimeException("City is null"))
+            }
+        }
     }
 
     private fun saveCity(city: String) {
