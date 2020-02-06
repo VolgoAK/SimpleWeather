@@ -1,10 +1,9 @@
 package com.volgoak.simpleweather
 
 import android.app.Application
-import com.volgoak.simpleweather.di.ApplicationComponent
-import com.volgoak.simpleweather.di.ApplicationModule
-import com.volgoak.simpleweather.di.DaggerApplicationComponent
-import com.volgoak.simpleweather.di.WeatherModule
+import com.volgoak.simpleweather.di.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
@@ -12,14 +11,17 @@ import timber.log.Timber
  */
 class App : Application(){
 
-    lateinit var component : ApplicationComponent
-
     override fun onCreate() {
         super.onCreate()
-        component = DaggerApplicationComponent.builder()
+        /*component = DaggerApplicationComponent.builder()
                 .weatherModule(WeatherModule())
                 .applicationModule(ApplicationModule(this))
-                .build()
+                .build()*/
+
+        startKoin {
+            androidContext(this@App)
+            modules(appModule)
+        }
 
         if(BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }

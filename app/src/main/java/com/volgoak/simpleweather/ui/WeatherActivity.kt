@@ -15,12 +15,12 @@ import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.bean.ReadableWeather
 import com.volgoak.simpleweather.utils.getIconUrl
 import kotlinx.android.synthetic.main.activity_weather.*
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class WeatherActivity : AppCompatActivity(), MVP.View {
 
-    @Inject
-    lateinit var presenter: MVP.Presenter
+    private val presenter: MVP.Presenter by inject()
 
     lateinit var adapter: RvAdapter
 
@@ -31,8 +31,6 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
-
-        (application as App).component.inject(this)
 
         adapter = RvAdapter()
         rvForecast.layoutManager = GridLayoutManager(this, 3)
