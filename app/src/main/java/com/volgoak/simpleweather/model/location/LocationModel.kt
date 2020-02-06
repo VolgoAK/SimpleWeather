@@ -1,6 +1,6 @@
 package com.volgoak.simpleweather.model.location
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import android.location.Location
 import com.volgoak.simpleweather.bean.City
 

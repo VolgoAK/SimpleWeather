@@ -1,8 +1,8 @@
 package com.volgoak.simpleweather.model.location
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.location.Geocoder
 import android.location.Location

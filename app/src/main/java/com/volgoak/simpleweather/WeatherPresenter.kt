@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.volgoak.simpleweather.bean.Forecast
 import com.volgoak.simpleweather.bean.Weather
 import com.volgoak.simpleweather.model.location.LocationModelImpl

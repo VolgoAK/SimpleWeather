@@ -2,7 +2,7 @@ package com.volgoak.simpleweather.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 /**
  * Created by alex on 4/2/18.
