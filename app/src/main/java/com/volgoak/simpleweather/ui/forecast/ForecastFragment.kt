@@ -1,11 +1,11 @@
-package com.volgoak.simpleweather.ui
+package com.volgoak.simpleweather.ui.forecast
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.R
@@ -18,9 +18,9 @@ import com.volgoak.simpleweather.utils.show
 import kotlinx.android.synthetic.main.activity_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WeatherActivity : AppCompatActivity() {
+class ForecastFragment : Fragment(R.layout.activity_weather) {
 
-    private val viewModel by viewModel<WeatherViewModel>()
+    private val viewModel by viewModel<ForecastViewModel>()
 
     lateinit var adapter: RvAdapter
 
@@ -28,29 +28,27 @@ class WeatherActivity : AppCompatActivity() {
         const val LOCATION_PERMISSION_REQUEST = 1033
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_weather)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         adapter = RvAdapter()
-        rvForecast.layoutManager = GridLayoutManager(this, 3)
+        rvForecast.layoutManager = GridLayoutManager(requireContext(), 3)
         rvForecast.adapter = adapter
 
         viewModel.stateLD.observeSafe(this, ::onNewState)
     }
 
-    private fun onNewState(state: WeatherScreeState) {
+    private fun onNewState(state: ForecastScreenState) {
         when (state) {
-            is WeatherScreeState.WeatherLoaded -> {
+            is ForecastScreenState.WeatherLoaded -> {
                 progress.hide()
                 setWeather(state.weather)
                 setForecast(state.forecast)
             }
-            is WeatherScreeState.Error -> {
-                Toast.makeText(this, state.error, Toast.LENGTH_SHORT).show()
+            is ForecastScreenState.Error -> {
+                Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
             }
-            is WeatherScreeState.Loading -> progress.show()
-            is WeatherScreeState.LocationPermissionRequired -> askLocationPermission()
+            is ForecastScreenState.Loading -> progress.show()
+            is ForecastScreenState.LocationPermissionRequired -> askLocationPermission()
         }
     }
 
@@ -82,7 +80,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun askLocationPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+        requestPermissions( arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                 LOCATION_PERMISSION_REQUEST)
     }
 

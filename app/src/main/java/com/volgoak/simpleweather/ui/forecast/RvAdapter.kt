@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.ui
+package com.volgoak.simpleweather.ui.forecast
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

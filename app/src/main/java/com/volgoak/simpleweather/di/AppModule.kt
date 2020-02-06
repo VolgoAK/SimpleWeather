@@ -1,5 +1,6 @@
 package com.volgoak.simpleweather.di
 
+import com.example.singleactivityexample.navigation.Navigator
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.volgoak.simpleweather.BuildConfig
 import com.volgoak.simpleweather.model.location.LocationRepository
@@ -58,4 +59,6 @@ val appModule = module {
     single { LocationRepository(get()) }
 
     single<SchedulersProvider> { SchedulersProviderImpl() }
+
+    single { Navigator() }
 }

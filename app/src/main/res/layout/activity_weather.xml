@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context="com.volgoak.simpleweather.ui.WeatherActivity">
+            tools:context="com.volgoak.simpleweather.ui.forecast.ForecastFragment">
 
             <TextView
                 android:id="@+id/tvCityName"
