@@ -35,6 +35,8 @@ ext {
     supportVersion = "27.1.1"
     googleServicesVersion = "17.0.0"
     koin_version = '2.0.1'
+    flexibleAdapterVersion = '5.1.0'
+    flexibleAdapterUIVersion = "1.0.0"
 }
 
 dependencies {
@@ -87,6 +89,10 @@ dependencies {
 
     //Caching
     implementation 'com.nytimes.android:store3:3.1.1'
+
+    //RecyclerView adapter
+    implementation "eu.davidea:flexible-adapter:$flexibleAdapterVersion"
+    implementation "eu.davidea:flexible-adapter-ui:$flexibleAdapterUIVersion"
 
     //Test libraries
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

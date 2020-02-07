@@ -73,3 +73,5 @@ fun dayListToWeather(list : List<ListItem>) : DayForecast {
     return DayForecast(date, temp, min, max, icon, description)
 }
 
+val dateFormat = SimpleDateFormat("EE")
+

@@ -40,6 +40,7 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
+                .client(get())
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

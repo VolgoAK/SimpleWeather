@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.bean.DayForecast
@@ -15,14 +16,18 @@ import com.volgoak.simpleweather.utils.getIconUrl
 import com.volgoak.simpleweather.utils.hide
 import com.volgoak.simpleweather.utils.observeSafe
 import com.volgoak.simpleweather.utils.show
+import eu.davidea.flexibleadapter.FlexibleAdapter
+import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.activity_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ForecastFragment : Fragment(R.layout.activity_weather) {
+class ForecastFragment : Fragment(R.layout.activity_weather),
+        FlexibleAdapter.OnItemClickListener {
 
     private val viewModel by viewModel<ForecastViewModel>()
 
     lateinit var adapter: RvAdapter
+    private val forecastAdapter = FlexibleAdapter(emptyList(), this)
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST = 1033
@@ -34,16 +39,28 @@ class ForecastFragment : Fragment(R.layout.activity_weather) {
         rvForecast.layoutManager = GridLayoutManager(requireContext(), 3)
         rvForecast.adapter = adapter
 
+        rvForecast.apply {
+            layoutManager = GridLayoutManager(requireContext(), 3).apply {
+                spanSizeLookup = createSpanSizeLookup()
+            }
+            adapter = forecastAdapter
+        }
+
         viewModel.stateLD.observeSafe(this, ::onNewState)
+    }
+
+    private fun createSpanSizeLookup() = object: GridLayoutManager.SpanSizeLookup() {
+        override fun getSpanSize(position: Int): Int {
+            return when(forecastAdapter.getItem(position)) {
+                is CurrentWeatherItem -> 3
+                else -> 1
+            }
+        }
     }
 
     private fun onNewState(state: ForecastScreenState) {
         when (state) {
-            is ForecastScreenState.WeatherLoaded -> {
-                progress.hide()
-                setWeather(state.weather)
-                setForecast(state.forecast)
-            }
+            is ForecastScreenState.WeatherLoaded -> onWeatherLoaded(state.weather, state.forecast)
             is ForecastScreenState.Error -> {
                 Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
             }
@@ -52,35 +69,19 @@ class ForecastFragment : Fragment(R.layout.activity_weather) {
         }
     }
 
-    private fun setWeather(weather: ReadableWeather) {
-        tvCityName.text = weather.city
-        tvTemp.text = getString(R.string.temp_format, weather.temp)
-        tvWeatherDescription.text = weather.description
-
-        tvMinTemp.text = getString(R.string.temp_format, weather.min)
-        tvMaxTemp.text = getString(R.string.temp_format, weather.max)
-
-        tvUnit.text = "C"
-
-        Picasso.get()
-                .load(getIconUrl(weather.icon))
-                .into(ivWeather)
+    private fun onWeatherLoaded(weather: ReadableWeather, forecastList: List<DayForecast>) {
+        progress.hide()
+        val items = mutableListOf<IFlexible<*>>(CurrentWeatherItem(weather))
+        items.addAll(forecastList.map { DayForecastItem(it) })
+        forecastAdapter.updateDataSet(items)
     }
 
-    private fun setForecast(forecastList: List<DayForecast>) {
-        //take min and max temp from forecast, cause it incorrect in the current weather
-        if (forecastList.isNotEmpty()) {
-            val todayMin = forecastList[0].min
-            val todayMax = forecastList[0].max
-
-            tvMinTemp.text = getString(R.string.temp_format, todayMin)
-            tvMaxTemp.text = getString(R.string.temp_format, todayMax)
-        }
-        adapter.setData(forecastList)
+    override fun onItemClick(view: View?, position: Int): Boolean {
+        return true
     }
 
     private fun askLocationPermission() {
-        requestPermissions( arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                 LOCATION_PERMISSION_REQUEST)
     }
 
