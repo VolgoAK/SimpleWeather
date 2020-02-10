@@ -5,9 +5,11 @@ import android.location.Geocoder
 import com.example.singleactivityexample.navigation.Navigator
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.volgoak.simpleweather.BuildConfig
 import com.volgoak.simpleweather.model.location.LocationRepository
+import com.volgoak.simpleweather.model.location.UserCityRepository
 import com.volgoak.simpleweather.model.weather.WeatherApi
 import com.volgoak.simpleweather.model.weather.WeatherCacheProvider
 import com.volgoak.simpleweather.model.weather.WeatherRepository
@@ -23,6 +25,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 private const val NAME_OPEN_WEATHER_TOKEN = "open_weather_token_name"
+private const val NAME_USER_CITY_PREFS = "user_city_prefs"
 
 val appModule = module {
 
@@ -68,6 +71,19 @@ val appModule = module {
     single { LocationRepository(get(), get()) }
 
     single<SchedulersProvider> { SchedulersProviderImpl() }
+
+    single(named(NAME_USER_CITY_PREFS)) {
+        get<Context>()
+                .getSharedPreferences(NAME_USER_CITY_PREFS, Context.MODE_PRIVATE)
+    }
+
+    single {
+        GsonBuilder()
+                .setPrettyPrinting()
+                .create()
+    }
+
+    single { UserCityRepository(get(named(NAME_USER_CITY_PREFS)), get()) }
 
     single { Navigator() }
 }

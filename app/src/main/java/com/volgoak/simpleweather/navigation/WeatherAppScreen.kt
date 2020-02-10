@@ -1,5 +1,6 @@
 package com.volgoak.simpleweather.navigation
 
+import com.volgoak.simpleweather.ui.emptyCity.EmptyCityFragment
 import com.volgoak.simpleweather.ui.forecast.ForecastFragment
 import com.volgoak.simpleweather.ui.selectCity.SelectCityFragment
 
@@ -13,4 +14,8 @@ class WeatherScreen(): WeatherAppScreen() {
 
 class SelectCityScreen(): WeatherAppScreen() {
     override fun createFragment() = SelectCityFragment()
+}
+
+class EmptyCityScreen: WeatherAppScreen() {
+    override fun createFragment() = EmptyCityFragment()
 }

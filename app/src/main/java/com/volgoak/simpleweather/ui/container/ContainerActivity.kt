@@ -9,10 +9,12 @@ import com.volgoak.simpleweather.navigation.BackButtonListener
 import com.volgoak.simpleweather.navigation.SelectCityScreen
 import com.volgoak.simpleweather.navigation.WeatherScreen
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContainerActivity : AppCompatActivity(R.layout.activity_container) {
 
     private val navigator by inject<Navigator>()
+    private val viewModel by viewModel<ContainerViewModel>()
 
     private val navigatorHolder = MyAppNavigator(
             this,
@@ -22,7 +24,7 @@ class ContainerActivity : AppCompatActivity(R.layout.activity_container) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            navigator.setRootScreen(SelectCityScreen())
+            viewModel.onCreatedFirstTime()
         }
     }
 
