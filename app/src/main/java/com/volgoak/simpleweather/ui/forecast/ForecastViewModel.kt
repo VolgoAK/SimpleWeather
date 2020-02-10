@@ -3,6 +3,7 @@ package com.volgoak.simpleweather.ui.forecast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.volgoak.simpleweather.model.location.LocationRepository
+import com.volgoak.simpleweather.model.location.UserCityRepository
 import com.volgoak.simpleweather.model.weather.WeatherRepository
 import com.volgoak.simpleweather.utils.*
 import io.reactivex.disposables.SerialDisposable
@@ -12,7 +13,8 @@ import timber.log.Timber
 class ForecastViewModel(
         private val weatherRepository: WeatherRepository,
         private val schedulersProvider: SchedulersProvider,
-        private val locationRepository: LocationRepository
+        private val locationRepository: LocationRepository,
+        private val userCityRepository: UserCityRepository
 ): ViewModel() {
     val stateLD = MutableLiveData<ForecastScreenState>()
 
@@ -23,11 +25,12 @@ class ForecastViewModel(
     }
 
     private fun loadWeather() {
-        locationRepository.getLastKnownCity()
+        userCityRepository.getSelectedCity()
+                .toSingle()
                 .flatMap {
                     Singles.zip(
-                            weatherRepository.requestCurrentWeather(it),
-                            weatherRepository.requestForecast(it)
+                            weatherRepository.requestCurrentWeather(it.name),
+                            weatherRepository.requestForecast(it.name)
                     ).map {
                         ForecastScreenState.WeatherLoaded(it.first.toReadableWeather(), forecastToDailyForecast(it.second)!!)
                     }
@@ -46,7 +49,8 @@ class ForecastViewModel(
 
     fun onPermissionResult(granted: Boolean) {
         if(granted) {
-            locationRepository.update()
+            locationRepository.getUserCurrentLocation()
+                    .flatMapCompletable { userCityRepository.saveSelectedCity(it) }
                     .subscribeOn(schedulersProvider.io)
                     .observeOn(schedulersProvider.ui)
                     .subscribe( {

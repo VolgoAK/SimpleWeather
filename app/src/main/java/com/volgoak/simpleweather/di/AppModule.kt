@@ -1,6 +1,10 @@
 package com.volgoak.simpleweather.di
 
+import android.content.Context
+import android.location.Geocoder
 import com.example.singleactivityexample.navigation.Navigator
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.volgoak.simpleweather.BuildConfig
 import com.volgoak.simpleweather.model.location.LocationRepository
@@ -57,7 +61,11 @@ val appModule = module {
         WeatherRepository(get())
     }
 
-    single { LocationRepository(get()) }
+    single { Geocoder(get()) }
+
+    single<FusedLocationProviderClient> { LocationServices.getFusedLocationProviderClient(get<Context>()) }
+
+    single { LocationRepository(get(), get()) }
 
     single<SchedulersProvider> { SchedulersProviderImpl() }
 

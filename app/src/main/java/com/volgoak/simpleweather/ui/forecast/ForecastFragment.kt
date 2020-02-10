@@ -25,8 +25,6 @@ class ForecastFragment : Fragment(R.layout.activity_weather),
         FlexibleAdapter.OnItemClickListener {
 
     private val viewModel by viewModel<ForecastViewModel>()
-
-    lateinit var adapter: RvAdapter
     private val forecastAdapter = FlexibleAdapter(emptyList(), this)
 
     companion object {
@@ -35,9 +33,6 @@ class ForecastFragment : Fragment(R.layout.activity_weather),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = RvAdapter()
-        rvForecast.layoutManager = GridLayoutManager(requireContext(), 3)
-        rvForecast.adapter = adapter
 
         rvForecast.apply {
             layoutManager = GridLayoutManager(requireContext(), 3).apply {
