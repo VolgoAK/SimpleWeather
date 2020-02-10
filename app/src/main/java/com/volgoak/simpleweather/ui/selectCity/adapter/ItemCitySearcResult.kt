@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.ui.selectCity
+package com.volgoak.simpleweather.ui.selectCity.adapter
 
 
 import android.view.View
@@ -9,7 +9,6 @@ import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem
 import eu.davidea.flexibleadapter.items.IFlexible
 import eu.davidea.viewholders.FlexibleViewHolder
-import kotlinx.android.synthetic.main.fragment_select_city.view.*
 import kotlinx.android.synthetic.main.item_city_search_result.view.*
 
 
@@ -22,7 +21,7 @@ class ItemCitySearcResult(val city: City) : AbstractFlexibleItem<ItemCitySearcRe
         holder.tvCityName.text = city.name
     }
 
-    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = ItemCitySearcResult.ViewHolder(view, adapter)
+    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = ViewHolder(view, adapter)
 
     override fun equals(other: Any?) = other is ItemCitySearcResult
 

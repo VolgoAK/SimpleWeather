@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.ui.forecast
+package com.volgoak.simpleweather.ui.forecast.adapter
 
 
 import android.view.View
@@ -11,7 +11,6 @@ import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem
 import eu.davidea.flexibleadapter.items.IFlexible
 import eu.davidea.viewholders.FlexibleViewHolder
-import kotlinx.android.synthetic.main.activity_weather.*
 import kotlinx.android.synthetic.main.item_current_weather.view.*
 
 
@@ -38,7 +37,7 @@ class CurrentWeatherItem(val weather: ReadableWeather) : AbstractFlexibleItem<Cu
         }
     }
 
-    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = CurrentWeatherItem.ViewHolder(view, adapter)
+    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = ViewHolder(view, adapter)
 
     override fun equals(other: Any?) = other is CurrentWeatherItem
             && other.weather == weather

@@ -20,7 +20,7 @@ class LocationRepository(private val fusedLocationClient: FusedLocationProviderC
                 location?.let {
                     val city = readLocation(it)
                     emitter.onSuccess(city)
-                } ?: emitter.onError(RuntimeException("Can't get user location"))
+                } ?: run { emitter.onError(RuntimeException("Can't get user location")) }
             }.addOnFailureListener { exception ->
                 emitter.onError(exception)
             }
@@ -44,8 +44,6 @@ class LocationRepository(private val fusedLocationClient: FusedLocationProviderC
     fun searchCity(query: String): Single<List<City>> {
         return Single.create { emitter ->
             val addresses = geocoder.getFromLocationName(query, 20)
-            //todo remove
-            addresses.forEach { Timber.d("TESTING $it") }
             addresses.filter { it.getAddressLine(0).isNullOrEmpty().not() }
                     .map { City(it.getAddressLine(0), it.latitude, it.longitude) }
                     .apply { emitter.onSuccess(this) }

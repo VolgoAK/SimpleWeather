@@ -2,9 +2,11 @@ package com.volgoak.simpleweather.ui.forecast
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.singleactivityexample.navigation.Navigator
 import com.volgoak.simpleweather.model.location.LocationRepository
 import com.volgoak.simpleweather.model.location.UserCityRepository
 import com.volgoak.simpleweather.model.weather.WeatherRepository
+import com.volgoak.simpleweather.navigation.SelectCityScreen
 import com.volgoak.simpleweather.utils.*
 import io.reactivex.disposables.SerialDisposable
 import io.reactivex.rxkotlin.Singles
@@ -14,14 +16,15 @@ class ForecastViewModel(
         private val weatherRepository: WeatherRepository,
         private val schedulersProvider: SchedulersProvider,
         private val locationRepository: LocationRepository,
-        private val userCityRepository: UserCityRepository
+        private val userCityRepository: UserCityRepository,
+        private val navigator: Navigator
 ): ViewModel() {
     val stateLD = MutableLiveData<ForecastScreenState>()
 
     private val weatherDisposable = SerialDisposable()
 
     init {
-        stateLD.value = ForecastScreenState.LocationPermissionRequired
+        loadWeather()
     }
 
     private fun loadWeather() {
@@ -45,6 +48,14 @@ class ForecastViewModel(
                     Timber.e(error)
                     stateLD.value = ForecastScreenState.Error("Error")
                 }) into weatherDisposable
+    }
+
+    fun onCurrentLocationClicked() {
+        stateLD.value = ForecastScreenState.LocationPermissionRequired
+    }
+
+    fun onSelectCityClicked() {
+        navigator.navigateTo(SelectCityScreen())
     }
 
     fun onPermissionResult(granted: Boolean) {

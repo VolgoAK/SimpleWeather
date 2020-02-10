@@ -1,4 +1,4 @@
-package com.volgoak.simpleweather.ui.forecast
+package com.volgoak.simpleweather.ui.forecast.adapter
 
 
 import android.view.View
@@ -33,7 +33,7 @@ class DayForecastItem(val forecast: DayForecast) : AbstractFlexibleItem<DayForec
         }
     }
 
-    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = DayForecastItem.ViewHolder(view, adapter)
+    override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = ViewHolder(view, adapter)
 
     override fun equals(other: Any?) = other is DayForecastItem
             && other.forecast == forecast

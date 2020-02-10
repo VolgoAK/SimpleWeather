@@ -22,7 +22,7 @@ class EmptyCityViewModel(
     private val getLocationDisposable = SerialDisposable()
 
     fun onSelectCityClicked() {
-        navigator.setRootScreen(SelectCityScreen())
+        navigator.setRootScreen(SelectCityScreen(true))
     }
 
     fun onCurrentLocationClicked() {

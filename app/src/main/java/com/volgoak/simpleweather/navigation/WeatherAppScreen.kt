@@ -12,8 +12,8 @@ class WeatherScreen(): WeatherAppScreen() {
     override fun createFragment() = ForecastFragment()
 }
 
-class SelectCityScreen(): WeatherAppScreen() {
-    override fun createFragment() = SelectCityFragment()
+class SelectCityScreen(val openForecastWhenSelected: Boolean = false): WeatherAppScreen() {
+    override fun createFragment() = SelectCityFragment.newInstance(openForecastWhenSelected)
 }
 
 class EmptyCityScreen: WeatherAppScreen() {

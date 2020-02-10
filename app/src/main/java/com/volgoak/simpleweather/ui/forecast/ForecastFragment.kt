@@ -3,16 +3,17 @@ package com.volgoak.simpleweather.ui.forecast
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.bean.DayForecast
 import com.volgoak.simpleweather.bean.ReadableWeather
-import com.volgoak.simpleweather.utils.getIconUrl
+import com.volgoak.simpleweather.ui.forecast.adapter.CurrentWeatherItem
+import com.volgoak.simpleweather.ui.forecast.adapter.DayForecastItem
 import com.volgoak.simpleweather.utils.hide
 import com.volgoak.simpleweather.utils.observeSafe
 import com.volgoak.simpleweather.utils.show
@@ -22,7 +23,8 @@ import kotlinx.android.synthetic.main.activity_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForecastFragment : Fragment(R.layout.activity_weather),
-        FlexibleAdapter.OnItemClickListener {
+        FlexibleAdapter.OnItemClickListener,
+        Toolbar.OnMenuItemClickListener {
 
     private val viewModel by viewModel<ForecastViewModel>()
     private val forecastAdapter = FlexibleAdapter(emptyList(), this)
@@ -41,15 +43,31 @@ class ForecastFragment : Fragment(R.layout.activity_weather),
             adapter = forecastAdapter
         }
 
+        toolbar.setOnMenuItemClickListener(this)
+
         viewModel.stateLD.observeSafe(this, ::onNewState)
     }
 
-    private fun createSpanSizeLookup() = object: GridLayoutManager.SpanSizeLookup() {
+    private fun createSpanSizeLookup() = object : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
-            return when(forecastAdapter.getItem(position)) {
+            return when (forecastAdapter.getItem(position)) {
                 is CurrentWeatherItem -> 3
                 else -> 1
             }
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            R.id.item_current_location -> {
+                viewModel.onCurrentLocationClicked()
+                true
+            }
+            R.id.item_select_city -> {
+                viewModel.onSelectCityClicked()
+                true
+            }
+            else -> false
         }
     }
 

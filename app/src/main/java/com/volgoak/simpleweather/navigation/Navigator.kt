@@ -22,6 +22,10 @@ class Navigator {
         cicerone.router.backTo(screen)
     }
 
+    fun popScreen() {
+        cicerone.router.exit()
+    }
+
     fun setRootScreen(screen: WeatherAppScreen) {
         cicerone.router.newRootScreen(screen)
     }
