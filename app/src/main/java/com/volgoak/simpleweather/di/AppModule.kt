@@ -13,6 +13,7 @@ import com.volgoak.simpleweather.model.location.UserCityRepository
 import com.volgoak.simpleweather.model.weather.WeatherApi
 import com.volgoak.simpleweather.model.weather.WeatherCacheProvider
 import com.volgoak.simpleweather.model.weather.WeatherRepository
+import com.volgoak.simpleweather.ui.selectCity.SelectCityEventBus
 import com.volgoak.simpleweather.utils.SchedulersProvider
 import com.volgoak.simpleweather.utils.SchedulersProviderImpl
 import okhttp3.OkHttpClient
@@ -86,4 +87,6 @@ val appModule = module {
     single { UserCityRepository(get(named(NAME_USER_CITY_PREFS)), get()) }
 
     single { Navigator() }
+
+    single { SelectCityEventBus() }
 }

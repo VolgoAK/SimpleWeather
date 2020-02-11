@@ -2,7 +2,6 @@ package com.volgoak.simpleweather.model.location
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.volgoak.simpleweather.utils.PreferenceHelper.get
 import io.reactivex.Completable
 import io.reactivex.Maybe
 
@@ -17,7 +16,7 @@ class UserCityRepository(
 
     fun getSelectedCity(): Maybe<City> {
         return Maybe.create { emitter ->
-            prefs.get<String>(SAVED_CITY, null)?.let {
+            prefs.getString(SAVED_CITY, null)?.let {
                 emitter.onSuccess(gson.fromJson(it, City::class.java))
             } ?: run {
                 emitter.onComplete()

@@ -12,7 +12,7 @@ import eu.davidea.viewholders.FlexibleViewHolder
 import kotlinx.android.synthetic.main.item_city_search_result.view.*
 
 
-class ItemCitySearcResult(val city: City) : AbstractFlexibleItem<ItemCitySearcResult.ViewHolder>() {
+class ItemCitySearchResult(val city: City) : AbstractFlexibleItem<ItemCitySearchResult.ViewHolder>() {
 
     override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?,
                                 holder: ViewHolder,
@@ -23,7 +23,7 @@ class ItemCitySearcResult(val city: City) : AbstractFlexibleItem<ItemCitySearcRe
 
     override fun createViewHolder(view: View, adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>?) = ViewHolder(view, adapter)
 
-    override fun equals(other: Any?) = other is ItemCitySearcResult
+    override fun equals(other: Any?) = other is ItemCitySearchResult
 
     override fun getLayoutRes() = R.layout.item_city_search_result
 

@@ -82,6 +82,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
     implementation "com.jakewharton.rxbinding3:rxbinding:$rxBindingVersion"
     implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$rxBindingVersion"
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
 
     //di
     implementation "org.koin:koin-android:$koin_version"

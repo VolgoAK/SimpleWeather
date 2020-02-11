@@ -28,12 +28,10 @@ class LocationRepository(private val fusedLocationClient: FusedLocationProviderC
     }
 
     private fun readLocation(location: Location): City {
-        Timber.d("latitide ${location.latitude} longitude ${location.longitude}")
         val adresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         var city = ""
 
         for (adress in adresses) {
-            Timber.d("address ${adress.locality}")
             city = adress.locality
             if (city.isNotEmpty()) break
         }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.volgoak.simpleweather.R
 import com.volgoak.simpleweather.model.location.City
-import com.volgoak.simpleweather.ui.selectCity.adapter.ItemCitySearcResult
+import com.volgoak.simpleweather.ui.selectCity.adapter.ItemCitySearchResult
 import com.volgoak.simpleweather.utils.getExtraNotNull
 import com.volgoak.simpleweather.utils.into
 import com.volgoak.simpleweather.utils.observeSafe
@@ -56,13 +56,13 @@ class SelectCityFragment: Fragment(R.layout.fragment_select_city), FlexibleAdapt
 
     private fun onSearchResult(cities: List<City>) {
         cityAdapter.updateDataSet(
-                cities.map { ItemCitySearcResult(it) }
+                cities.map { ItemCitySearchResult(it) }
         )
     }
 
     override fun onItemClick(view: View?, position: Int): Boolean {
         return when(val item = cityAdapter.getItem(position)) {
-            is ItemCitySearcResult -> {
+            is ItemCitySearchResult -> {
                 viewModel.onCityClicked(item.city)
                 true
             }

@@ -18,7 +18,8 @@ class SelectCityViewModel(
         private val userCityRepository: UserCityRepository,
         private val locationRepository: LocationRepository,
         private val schedulersProvider: SchedulersProvider,
-        private val navigator: Navigator): ViewModel() {
+        private val navigator: Navigator,
+        private val selectCityEventBus: SelectCityEventBus): ViewModel() {
 
     val citiesLd = MutableLiveData<List<City>>()
 
@@ -42,6 +43,7 @@ class SelectCityViewModel(
                 .subscribeOn(schedulersProvider.io)
                 .observeOn(schedulersProvider.ui)
                 .subscribe({
+                    selectCityEventBus.eventRelay.accept(SelectCityEvent.CitySelected)
                     if(startForecastWhenSelected) {
                         navigator.setRootScreen(WeatherScreen())
                     } else {

@@ -75,6 +75,7 @@ class ForecastFragment : Fragment(R.layout.activity_weather),
         when (state) {
             is ForecastScreenState.WeatherLoaded -> onWeatherLoaded(state.weather, state.forecast)
             is ForecastScreenState.Error -> {
+                progress.hide()
                 Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
             }
             is ForecastScreenState.Loading -> progress.show()

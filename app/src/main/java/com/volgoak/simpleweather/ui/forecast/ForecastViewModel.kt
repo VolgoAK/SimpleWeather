@@ -7,6 +7,7 @@ import com.volgoak.simpleweather.model.location.LocationRepository
 import com.volgoak.simpleweather.model.location.UserCityRepository
 import com.volgoak.simpleweather.model.weather.WeatherRepository
 import com.volgoak.simpleweather.navigation.SelectCityScreen
+import com.volgoak.simpleweather.ui.selectCity.SelectCityEventBus
 import com.volgoak.simpleweather.utils.*
 import io.reactivex.disposables.SerialDisposable
 import io.reactivex.rxkotlin.Singles
@@ -17,7 +18,8 @@ class ForecastViewModel(
         private val schedulersProvider: SchedulersProvider,
         private val locationRepository: LocationRepository,
         private val userCityRepository: UserCityRepository,
-        private val navigator: Navigator
+        private val navigator: Navigator,
+        private val selectCityEventBus: SelectCityEventBus
 ): ViewModel() {
     val stateLD = MutableLiveData<ForecastScreenState>()
 
@@ -56,6 +58,8 @@ class ForecastViewModel(
 
     fun onSelectCityClicked() {
         navigator.navigateTo(SelectCityScreen())
+        selectCityEventBus.eventRelay
+                .subscribe { loadWeather() } into weatherDisposable
     }
 
     fun onPermissionResult(granted: Boolean) {
