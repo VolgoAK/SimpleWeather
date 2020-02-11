@@ -3,4 +3,6 @@
     <string name="error">Error</string>
 
     <string name="temp_format">%.2f°</string>
+    <string name="use_current_location">Use current location</string>
+    <string name="select_city">Select city</string>
 </resources>
